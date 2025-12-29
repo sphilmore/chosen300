@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    :root {
+        /* Configurable theme colors */
+        --primary-color: #0052CC;
+        --primary-hover: #0747A6;
+        --success-bg: #E3FCEF;
+        --success-text: #00875A;
+        --error-bg: #FFEBE6;
+        --error-text: #DE350B;
+        --warning-bg: #FFFAE6;
+        --warning-text: #974F0C;
+        --info-bg: #DEEBFF;
+        --info-text: #0747A6;
+
+        /* Standard spacing */
+        --spacing-xs: 4px;
+        --spacing-sm: 8px;
+        --spacing-md: 16px;
+        --spacing-lg: 24px;
+        --spacing-xl: 32px;
+
+        /* Typography */
+        --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        --font-size-sm: 13px;
+        --font-size-base: 14px;
+        --font-size-md: 16px;
+        --font-size-lg: 20px;
+        --font-size-xl: 24px;
+
+        /* Borders and shadows */
+        --border-radius: 6px;
+        --border-color: #dfe1e6;
+        --box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        --box-shadow-hover: 0 4px 8px rgba(0,0,0,0.12);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: var(--font-primary);
+        font-size: var(--font-size-base);
+        color: #172B4D;
+        background: #f4f5f7;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        line-height: 1.6;
+    }
+
+    .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: var(--spacing-lg);
+        padding-top: 0;
+    }
+
+    h2 {
+        color: #fff;
+        font-size: var(--font-size-xl);
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: -0.5px;
+    }
+
+    h3 {
+        color: #505F79;
+        font-size: var(--font-size-base);
+        font-weight: 400;
+        margin: var(--spacing-sm) 0;
+    }
+
+    .header-container {
+        background-color: var(--primary-color);
+        padding: var(--spacing-lg) 0;
+        margin: 0 0 var(--spacing-lg) 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 var(--spacing-lg);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+    }
+
+    .header-title {
+        flex: 1;
+    }
+
+    .header-title h2 {
+        color: #fff;
+        margin-bottom: var(--spacing-xs);
+        font-weight: 600;
+    }
+
+    .header-meta {
+        color: #fff;
+        font-size: var(--font-size-sm);
+        display: flex;
+        gap: var(--spacing-lg);
+    }
+
+    .header-meta span {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+    }
+
+    .logo {
+        width: 50px;
+        height: 50px;
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .filter-container {
+        background: white;
+        padding: var(--spacing-lg);
+        border-radius: var(--border-radius);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--border-color);
+    }
+
+    .filter-section {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .filter-section:last-child {
+        margin-bottom: 0;
+    }
+
+    .filter-label {
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: #505F79;
+        display: block;
+        font-size: var(--font-size-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
+
+    .filter-btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        cursor: pointer;
+        background-color: #f4f5f7;
+        color: #172B4D;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        transition: all 0.2s ease;
+        font-size: var(--font-size-base);
+        font-weight: 500;
+    }
+
+    .filter-btn:hover {
+        background-color: #ebecf0;
+        box-shadow: var(--box-shadow);
+        transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .filter-btn.active:hover {
+        background-color: var(--primary-hover);
+    }
+
+    .table-container {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: var(--spacing-lg);
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    /* Apply horizontal scroll to detail tables as well */
+    .detail-table-wrapper {
+        overflow-x: auto;
+        max-width: 100%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 800px;
+        background-color: #fff;
+    }
+
+    th, td {
+        padding: var(--spacing-md);
+        text-align: left;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    th {
+        background-color: #f7f8fa;
+        color: #505F79;
+        font-weight: 600;
+        font-size: var(--font-size-sm);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    tr:hover td {
+        background-color: #f7f8fa;
+    }
+
+    .totals-row {
+        background-color: #f0f4f8 !important;
+        font-weight: 600;
+        border-top: 2px solid var(--border-color);
+    }
+
+    .totals-row td {
+        background-color: #f0f4f8 !important;
+        color: #172B4D;
+        font-size: var(--font-size-sm);
+    }
+
+    /* Status cell colors using theme */
+    td.passed, .status-passed {
+        background-color: var(--success-bg);
+        color: var(--success-text);
+        font-weight: 600;
+    }
+
+    td.failed, .status-failed {
+        background-color: var(--error-bg);
+        color: var(--error-text);
+        font-weight: 600;
+    }
+
+    td.skipped, .status-skipped {
+        background-color: var(--warning-bg);
+        color: var(--warning-text);
+        font-weight: 600;
+    }
+
+    /* Status text colors using theme */
+    span.passed {
+        color: var(--success-text);
+        font-weight: 600;
+    }
+
+    span.failed {
+        color: var(--error-text);
+        font-weight: 600;
+    }
+
+    span.skipped {
+        color: var(--warning-text);
+        font-weight: 600;
+    }
+
+    /* Count badges using theme colors */
+    .count {
+        font-size: var(--font-size-sm);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: 16px;
+        font-weight: 600;
+    }
+
+    .count.passed {
+        background-color: var(--success-bg);
+        color: var(--success-text);
+        border: 1px solid var(--success-text);
+        border-opacity: 0.3;
+    }
+
+    .count.failed {
+        background-color: var(--error-bg);
+        color: var(--error-text);
+        border: 1px solid var(--error-text);
+        border-opacity: 0.3;
+    }
+
+    .count.skipped {
+        background-color: var(--warning-bg);
+        color: var(--warning-text);
+        border: 1px solid var(--warning-text);
+        border-opacity: 0.3;
+    }
+
+    .count.category {
+        background-color: var(--info-bg);
+        color: var(--info-text);
+        border: 1px solid var(--info-text);
+        border-opacity: 0.3;
+    }
+
+    .count.category-unknown {
+        background-color: #FFF0B3;
+        color: #7F5F01;
+        border: 1px solid #FFE380;
+    }
+
+    /* Category tags using theme colors */
+    .category-tag {
+        display: inline-block;
+        padding: 2px 12px;
+        margin: 2px;
+        background-color: var(--info-bg);
+        color: var(--info-text);
+        border-radius: 12px;
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        border: 1px solid var(--info-text);
+        border-opacity: 0.3;
+    }
+
+    .category-tag.unknown {
+        background-color: #FFF0B3;
+        color: #7F5F01;
+        border: 1px solid #FFE380;
+    }
+
+    /* Test status rows using theme colors */
+    tr.Passed {
+        background-color: var(--success-bg);
+    }
+
+    tr.Failed {
+        background-color: var(--error-bg);
+    }
+
+    tr.Skipped {
+        background-color: var(--warning-bg);
+    }
+
+    /* Buttons with theme colors */
+    button {
+        background-color: white;
+        color: #505F79;
+        border: 1px solid var(--border-color);
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--font-size-base);
+        font-weight: 500;
+        cursor: pointer;
+        border-radius: var(--border-radius);
+        transition: all 0.2s ease;
+    }
+
+    button:hover {
+        background-color: var(--info-bg);
+        color: var(--info-text);
+        border-color: var(--info-text);
+        box-shadow: var(--box-shadow);
+        transform: translateY(-1px);
+    }
+
+    /* Spec status text in summary using theme colors */
+    .spec-status .passed {
+        color: var(--success-text);
+    }
+
+    .spec-status .failed {
+        color: var(--error-text);
+    }
+
+    .spec-status .skipped {
+        color: var(--warning-text);
+    }
+
+    .spec-title {
+        font-size: var(--font-size-lg);
+        color: #172B4D;
+        margin-bottom: var(--spacing-md);
+        font-weight: 600;
+    }
+
+    .spec-summary {
+        background-color: #f7f8fa;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        padding: var(--spacing-md);
+        margin-bottom: var(--spacing-md);
+    }
+
+    .spec-status {
+        font-size: var(--font-size-md);
+        margin-bottom: var(--spacing-sm);
+        font-weight: 500;
+    }
+
+    .test-counts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+        align-items: center;
+        margin-top: var(--spacing-md);
+    }
+
+    tr.clickable-row {
+        cursor: pointer;
+    }
+
+    .popup {
+        display: none;
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 1000;
+        backdrop-filter: blur(4px);
+    }
+
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        padding: var(--spacing-xl);
+        border-radius: var(--border-radius);
+        max-width: 80%;
+        max-height: 80%;
+        overflow-y: auto;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .test-result-block {
+        background-color: white;
+        border-radius: var(--border-radius);
+        padding: var(--spacing-lg);
+        border: 1px solid var(--border-color);
+        margin-bottom: var(--spacing-lg);
+        box-shadow: var(--box-shadow);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: var(--spacing-xl) var(--spacing-lg);
+        color: #5e6c84;
+        font-size: var(--font-size-md);
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin: var(--spacing-lg) 0;
+    }
+
+    /* Scrollbar styling for all scrollable areas */
+    .table-wrapper::-webkit-scrollbar,
+    .detail-table-wrapper::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-track,
+    .detail-table-wrapper::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb,
+    .detail-table-wrapper::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+    }
+
+    .table-wrapper::-webkit-scrollbar-thumb:hover,
+    .detail-table-wrapper::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+</style>
+<script>
+    var activeFilters = {
+        status: [],
+        categories: []
+    };
+
+    function toggleDetails(specId) {
+        var details = document.getElementById('details-' + specId);
+        var button = document.getElementById('btn-' + specId);
+        if (details.style.display === 'none') {
+            details.style.display = 'block';
+            button.textContent = 'Collapse';
+        } else {
+            details.style.display = 'none';
+            button.textContent = 'Expand';
+        }
+    }
+
+    function scrollToSpec(specId) {
+        var specElement = document.getElementById('spec-' + specId);
+        if (specElement) {
+            specElement.scrollIntoView({behavior: "smooth", block: "start"});
+            toggleDetails(specId);
+        }
+    }
+
+    function showPopup(content) {
+        var popup = document.getElementById('popup');
+        var popupContent = document.getElementById('popup-content');
+        popupContent.innerHTML = content;
+        popup.style.display = 'block';
+    }
+
+    function closePopup() {
+        var popup = document.getElementById('popup');
+        popup.style.display = 'none';
+    }
+
+    function toggleTestDetails(caseId) {
+        var details = document.getElementById('test-details-' + caseId);
+        showPopup(details.innerHTML);
+    }
+
+    function toggleExecutionDetails(caseId) {
+        var details = document.getElementById('exec-details-' + caseId);
+        showPopup(details.innerHTML);
+    }
+
+    function toggleFilter(filterType, filterValue) {
+        var button = event.target;
+
+        if (filterType === 'status') {
+            var index = activeFilters.status.indexOf(filterValue);
+            if (index > -1) {
+                activeFilters.status.splice(index, 1);
+                button.classList.remove('active');
+            } else {
+                activeFilters.status.push(filterValue);
+                button.classList.add('active');
+            }
+        } else if (filterType === 'category') {
+            var index = activeFilters.categories.indexOf(filterValue);
+            if (index > -1) {
+                activeFilters.categories.splice(index, 1);
+                button.classList.remove('active');
+            } else {
+                activeFilters.categories.push(filterValue);
+                button.classList.add('active');
+            }
+        }
+
+        applyFilters();
+        updateTotals();
+    }
+
+    function testMatchesFilters(testStatus, testCategories) {
+        // If no filters are active, show everything
+        if (activeFilters.status.length === 0 && activeFilters.categories.length === 0) {
+            return true;
+        }
+
+        // Check status filter (if any status filters are active)
+        var statusMatch = activeFilters.status.length === 0 || activeFilters.status.includes(testStatus);
+
+        // Check category filter (if any category filters are active)
+        var categoryMatch = activeFilters.categories.length === 0;
+        if (activeFilters.categories.length > 0 && testCategories) {
+            var cats = testCategories.split(',');
+            for (var cat of activeFilters.categories) {
+                if (cats.includes(cat)) {
+                    categoryMatch = true;
+                    break;
+                }
+            }
+        }
+
+        // Both conditions must be true (AND logic)
+        return statusMatch && categoryMatch;
+    }
+
+    function applyFilters() {
+        // Filter test detail rows
+        var testRows = document.querySelectorAll('tr[data-categories]');
+        testRows.forEach(row => {
+            var testStatus = row.className;
+            var testCategories = row.getAttribute('data-categories') || '';
+
+            if (testMatchesFilters(testStatus, testCategories)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Update spec blocks visibility
+        var specDivs = document.querySelectorAll('div[id^="spec-"]');
+        var visibleCount = 0;
+
+        specDivs.forEach(div => {
+            var detailsDiv = div.querySelector('div[id^="details-"]');
+            var hasVisibleTests = false;
+
+            if (detailsDiv) {
+                var specTestRows = detailsDiv.querySelectorAll('tr[data-categories]');
+                for (var row of specTestRows) {
+                    if (row.style.display !== 'none') {
+                        hasVisibleTests = true;
+                        break;
+                    }
+                }
+            }
+
+            div.style.display = hasVisibleTests ? '' : 'none';
+            if (hasVisibleTests) visibleCount++;
+        });
+
+        // Update summary table rows
+        var summaryRows = document.querySelectorAll('.top-table tr.clickable-row');
+        summaryRows.forEach(row => {
+            var specId = row.getAttribute('onclick').match(/scrollToSpec\("(.+?)"\)/)[1];
+            var specDiv = document.getElementById('spec-' + specId);
+            row.style.display = (specDiv && specDiv.style.display !== 'none') ? '' : 'none';
+        });
+
+        // Show/hide no results message
+        var noResults = document.getElementById('no-results');
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    function updateTotals() {
+        // Count visible rows for totals
+        var totals = {
+            specs: 0,
+            status: '',
+            passed: 0,
+            failed: 0,
+            skipped: 0
+        };
+
+        var categoryTotals = {};
+
+        // Get all visible summary rows
+        var visibleRows = document.querySelectorAll('.top-table tr.clickable-row');
+        visibleRows.forEach(row => {
+            if (row.style.display !== 'none') {
+                totals.specs++;
+
+                // Get counts from cells
+                var cells = row.querySelectorAll('td');
+                if (cells.length > 4) {
+                    // Parse passed/failed/skipped counts
+                    totals.passed += parseInt(cells[2].textContent.split('/')[0]) || 0;
+                    totals.failed += parseInt(cells[3].textContent.split('/')[0]) || 0;
+                    totals.skipped += parseInt(cells[4].textContent.split('/')[0]) || 0;
+
+                    // Parse category counts
+                    for (var i = 5; i < cells.length; i++) {
+                        var catCount = parseInt(cells[i].textContent.split('/')[0]) || 0;
+                        var catIndex = i - 5;
+                        if (!categoryTotals[catIndex]) categoryTotals[catIndex] = 0;
+                        categoryTotals[catIndex] += catCount;
+                    }
+                }
+            }
+        });
+
+        // Update totals row
+        var totalsRow = document.getElementById('totals-row');
+        if (totalsRow) {
+            var totalCells = totalsRow.querySelectorAll('td');
+            totalCells[0].textContent = 'TOTAL (' + totals.specs + ' specs)';
+            totalCells[1].textContent = '-';
+            totalCells[2].textContent = totals.passed.toString();
+            totalCells[3].textContent = totals.failed.toString();
+            totalCells[4].textContent = totals.skipped.toString();
+
+            // Update category totals
+            for (var i = 5; i < totalCells.length; i++) {
+                var catIndex = i - 5;
+                totalCells[i].textContent = (categoryTotals[catIndex] || 0).toString();
+            }
+        }
+    }
+
+    // Initialize on page load
+    window.onload = function() {
+        updateTotals();
+    };
+</script>
+</head>
+<body>
+<div id="popup" class="popup" onclick="closePopup()">
+    <div id="popup-content" class="popup-content" onclick="event.stopPropagation()">
+    </div>
+</div>
+<div class='header-container'><div class='header-content'><img src='https://icon.icepanel.io/Technology/svg/pytest.svg' alt='Logo' class='logo'><div class='header-title'><h2>pytest HTML Report</h2><div class='header-meta'><span>Report generation time: 28 Dec 2025, 09:16</span><span>Test Environment: Development</span></div></div></div></div><div class='main-container'>
+<div class='filter-container'>
+<div class='filter-section'>
+<div class='filter-label'>Status Filters:</div>
+<div class='filter-group'>
+<button class='filter-btn' onclick="toggleFilter('status', 'Passed')">Passed</button>
+<button class='filter-btn' onclick="toggleFilter('status', 'Failed')">Failed</button>
+<button class='filter-btn' onclick="toggleFilter('status', 'Skipped')">Skipped</button>
+</div>
+</div>
+</div>
+<div class='table-container'>
+<div class='table-wrapper'>
+<table class='top-table'>
+<tr><th>Functional Specification</th><th>Overall Status</th><th>Tests Passed</th><th>Tests Failed</th><th>Tests Skipped</th></tr>
+<tr id='totals-row' class='totals-row'>
+<td>TOTAL</td>
+<td>-</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</table>
+</div>
+</div>
+<div id='no-results' class='no-results' style='display: none;'>No tests match the selected filters</div></div>
+
+</body>
+</html>
