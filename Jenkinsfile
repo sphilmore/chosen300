@@ -1,60 +1,85 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    VENV = "venv"
-  }
-
-  triggers {
-    pollSCM('H/5 * * * *')
-  }
-
-  stages {
-    stage('Checkout') {
-      steps {
-        checkout scm
-      }
+    tools {
+        python 'Python3'
     }
 
-    stage('Setup Python') {
-      steps {
-        bat """
-        python -m venv %VENV%
-        call %VENV%\\Scripts\\activate
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        """
-      }
+    environment {
+        PYTHON_ENV = 'venv'
     }
 
-    stage('Load Environment Variables') {
-      steps {
-        withCredentials([file(credentialsId: 'chosen300-env', variable: 'ENVFILE')]) {
-          bat 'copy /Y "%ENVFILE%" .env'
+    triggers {
+        // Poll GitHub every 5 minutes
+        pollSCM('H/5 * * * *')
+    }
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
         }
-      }
+
+        stage('Setup Python Environment') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh '''
+                            python -m venv ${PYTHON_ENV} || true
+                            source ${PYTHON_ENV}/bin/activate
+                            pip install --upgrade pip
+                            pip install -r requirements.txt
+                        '''
+                    } else {
+                        bat '''
+                            python -m venv %PYTHON_ENV%
+                            call %PYTHON_ENV%\\Scripts\\activate
+                            pip install --upgrade pip
+                            pip install -r requirements.txt
+                        '''
+                    }
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh '''
+                            source ${PYTHON_ENV}/bin/activate
+                            pytest tests -v --html=reports/report.html --self-contained-html
+                        '''
+                    } else {
+                        bat '''
+                            call %PYTHON_ENV%\\Scripts\\activate
+                            pytest tests -v --html=reports/report.html --self-contained-html
+                        '''
+                    }
+                }
+            }
+        }
     }
 
-    stage('Run Tests') {
-      steps {
-        bat """
-        if not exist reports mkdir reports
-        call %VENV%\\Scripts\\activate
-        pytest tests -v --html=reports\\report.html --self-contained-html
-        """
-      }
-    }
-  }
+    post {
+        always {
+            archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true
 
-  post {
-    always {
-      archiveArtifacts artifacts: 'reports/**/*', allowEmptyArchive: true
-      publishHTML([
-        reportDir: 'reports',
-        reportFiles: 'report.html',
-        reportName: 'Selenium Test Report',
-        keepAll: true
-      ])
+            publishHTML([
+                reportDir: 'reports',
+                reportFiles: 'report.html',
+                reportName: 'Test Report',
+                allowMissing: true,
+                alwaysLinkToLastBuild: true,
+                keepAll: true
+            ])
+        }
+
+        failure {
+            echo '❌ Tests failed — review HTML report'
+        }
     }
-  }
 }
+
