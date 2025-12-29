@@ -1,9 +1,7 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python3'
-    }
+   
 
     environment {
         PYTHON_ENV = 'venv'
