@@ -1,15 +1,12 @@
 pipeline {
     agent any
 
-   
-
     environment {
-        PYTHON_ENV = 'venv'
+        VENV = 'venv'
     }
 
     triggers {
-        // Poll GitHub every 5 minutes
-        pollSCM('H/5 * * * *')
+        pollSCM('H/2 * * * *')  // checks GitHub every 2 minutes
     }
 
     stages {
@@ -22,41 +19,21 @@ pipeline {
 
         stage('Setup Python Environment') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh '''
-                            python -m venv ${PYTHON_ENV} || true
-                            source ${PYTHON_ENV}/bin/activate
-                            pip install --upgrade pip
-                            pip install -r requirements.txt
-                        '''
-                    } else {
-                        bat '''
-                            python -m venv %PYTHON_ENV%
-                            call %PYTHON_ENV%\\Scripts\\activate
-                            pip install --upgrade pip
-                            pip install -r requirements.txt
-                        '''
-                    }
-                }
+                bat '''
+                python -m venv %VENV%
+                call %VENV%\\Scripts\\activate
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh '''
-                            source ${PYTHON_ENV}/bin/activate
-                            pytest tests -v --html=reports/report.html --self-contained-html
-                        '''
-                    } else {
-                        bat '''
-                            call %PYTHON_ENV%\\Scripts\\activate
-                            pytest tests -v --html=reports/report.html --self-contained-html
-                        '''
-                    }
-                }
+                bat '''
+                call %VENV%\\Scripts\\activate
+                pytest tests -v --html=reports\\report.html --self-contained-html
+                '''
             }
         }
     }
@@ -68,16 +45,11 @@ pipeline {
             publishHTML([
                 reportDir: 'reports',
                 reportFiles: 'report.html',
-                reportName: 'Test Report',
-                allowMissing: true,
+                reportName: 'UI Automation Test Report',
                 alwaysLinkToLastBuild: true,
-                keepAll: true
+                keepAll: true,
+                allowMissing: true
             ])
-        }
-
-        failure {
-            echo '❌ Tests failed — review HTML report'
         }
     }
 }
-
