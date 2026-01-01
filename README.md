@@ -150,7 +150,7 @@ Open the report in your browser to view detailed results.
 
 ### Already Registered Users
 - ✅ Login functionality
-- ✅ Sign out functionality
+  
 
 ### Community Service
 - ✅ Community service registration
@@ -208,4 +208,5 @@ This project is for portfolio/demonstration purposes.
 ## 👤 Author
 
 Test Automation Framework - Portfolio Project
+
 
