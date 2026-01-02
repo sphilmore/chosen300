@@ -2,6 +2,22 @@
 
 A comprehensive Selenium WebDriver test automation framework for the Chosen 300 Volunteer Application using Python, pytest, and the Page Object Model (POM) design pattern.
 
+## Project Context
+
+This automation framework was built to test a **live, production volunteer application**
+used by the Chosen 300 organization.
+
+The goal of this project was to:
+- Validate critical volunteer registration flows
+- Catch UI and validation defects before users encounter them
+- Automate high-risk forms involving user data, required fields, and conditional logic
+
+This project reflects **real-world QA automation practices**, including:
+- Testing against a live environment (with safe test data)
+- Negative testing for missing and invalid inputs
+- Framework design intended for long-term maintainability
+
+
 ## 🚀 Features
 
 - **Page Object Model (POM)**: Clean, maintainable test architecture
