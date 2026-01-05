@@ -50,3 +50,50 @@ class User(BaseForm):
         self.wait().until(
             EC.presence_of_element_located((By.XPATH, "//a[@href='/' and .//button]"))
         ).click()
+
+    def user_musician_role(self):
+        self.wait().until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[.//text()[normalize-space()='Musician']]")
+            )
+        ).click()
+
+    def get_user_musician_role_message(self):
+        success = self.wait().until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//li[@data-sonner-toast and @data-type='success']")
+            )
+        ).text
+        return success
+
+
+    def user_community_service_role(self):
+        self.wait().until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[.//text()[normalize-space()='Community Service']]")
+            )
+
+        ).click()
+    def get_user_community_service_role_message(self):
+            success = self.wait().until(
+                EC.element_to_be_clickable(
+                    (By.XPATH, "//li[@data-sonner-toast and @data-type='success']")
+                )
+            ).text
+            return success
+
+    def user_musician_role_sign_out(self):
+        self.wait().until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[normalize-space()='Sign Out']")
+            )
+        ).click()
+
+    def user_community_role_sign_out(self):
+        self.wait().until(
+            EC.element_to_be_clickable(
+                (By.XPATH, "//button[normalize-space()='Sign Out']")
+            )
+        ).click()
+
+
