@@ -10,9 +10,11 @@ class TestConfig:
 
     # User credentials
     PHONE_NUMBER = os.getenv('TEST_PHONE_NUMBER', 'your_phone_number_here')
+    USER_PHONE_NUMBER = os.getenv('TEST_USERS_PHONE_NUMBER', 'your_phone_number_here')
     EMAIL = os.getenv('TEST_EMAIL', 'test@email.com')
     FIRST_NAME = os.getenv('TEST_FIRST_NAME', 'Test')
     LAST_NAME = os.getenv('TEST_LAST_NAME', 'User')
+
 
     # Additional phone numbers for different test scenarios
     PHONE_REGISTRATION = os.getenv('TEST_PHONE_REGISTRATION', 'your_registration_phone_here')
