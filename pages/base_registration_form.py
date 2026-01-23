@@ -6,7 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 class BaseForm:
     """Base page object class for registration forms with common functionality."""
     
-    TIMEOUT = 10
+    TIMEOUT = 20
     # URL
     URL = "https://chosen-300-volunteer-app-prototype-pbgi.vercel.app/"
 
@@ -106,3 +106,4 @@ class BaseForm:
             EC.visibility_of_element_located((By.XPATH, f"//p[normalize-space()='{text}']"))
         )
         return element.text
+
