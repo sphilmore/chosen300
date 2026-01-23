@@ -18,7 +18,7 @@ class User(BaseForm):
     def click_already_registered(self) -> None:
         """Click the 'Already Registered' button to access the login form."""
         self.wait().until(
-            EC.presence_of_element_located((By.XPATH, "//button[.//span[normalize-space()='Already Registered']]"))
+            EC.element_to_be_clickable((By.XPATH, "//button[.//span[normalize-space()='Already Registered']]"))
         ).click()
 
     def login(self, text: str) -> None:
@@ -49,7 +49,7 @@ class User(BaseForm):
     def sign_out(self) -> None:
         """Click the sign out button to log out the current user."""
         self.wait().until(
-            EC.presence_of_element_located((By.XPATH, "//a[@href='/' and .//button]"))
+            EC.element_to_be_clickable((By.XPATH, "//a[@href='/' and .//button]"))
         ).click()
 
     def user_musician_role(self) -> None:
@@ -61,31 +61,28 @@ class User(BaseForm):
 
     def get_user_musician_role_message(self) -> str:
         success = self.wait().until(
-            EC.visibility_of_element_located(
-                (By.XPATH, "//li[@data-sonner-toast and @data-type='success' and @data-visible='true']")
+            EC.element_to_be_clickable(
+                (By.XPATH, "//li[@data-sonner-toast and @data-type='success']")
             )
         ).text
         return success
 
     def user_community_service_role(self) -> None:
-        # Wait for login to complete and role buttons to be available
-        self.wait().until(
-            EC.presence_of_element_located(
-                (By.XPATH, "//button[.//text()[normalize-space()='Musician']]")
-            )
+        locator = (
+            By.XPATH,
+            "//*[self::button or @role='button' or self::a]"
+            "[normalize-space()='Community Service' or .//*[normalize-space()='Community Service']"
+            " or @aria-label='Community Service' or .//*[@aria-label='Community Service']]"
         )
 
-        button = self.wait().until(
-            EC.element_to_be_clickable(
-                (By.XPATH, "//button[contains(., 'Community Service')]")
-            )
-        )
-        button.click()
+        el = self.wait().until(EC.element_to_be_clickable(locator))
+        self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
+        el.click()
 
     def get_user_community_service_role_message(self) -> str:
         success = self.wait().until(
-            EC.visibility_of_element_located(
-                (By.XPATH, "//li[@data-sonner-toast and @data-type='success' and @data-visible='true']")
+            EC.element_to_be_clickable(
+                (By.XPATH, "//li[@data-sonner-toast and @data-type='success']")
             )
         ).text
         return success
